@@ -1,7 +1,12 @@
 import styles from './Navbar.module.css'
 import { NavLink } from "react-router-dom"
+import { useAuthValue } from '../context/AuthContext'
+import { useAuthentication } from '../hooks/useAuthentication'
 
 const Navbar = () => {
+  const {logout} = useAuthentication()
+  const {user} = useAuthValue()
+  console.log(user)
   return (
     <>
       <nav className={styles.navbar}>
@@ -15,7 +20,23 @@ const Navbar = () => {
           <NavLink to="/register" className={styles.link} activeClassName={styles.active}>
           <li>Register</li>
           </NavLink>
-          <button className={styles.exit}>Exit</button>
+          {user && (
+            <>
+            <li>
+              <NavLink to="/post/create" className={styles.link} activeClassName={styles.active}>
+              New Post
+              </NavLink>
+            </li>
+              <li>
+              <NavLink to="/dashboard" className={styles.link} activeClassName={styles.active}>
+              Dashboard
+              </NavLink>
+            </li>
+            <li>
+          <button onClick={logout} className={styles.exit}>Exit</button>
+          </li>
+          </>
+          )}
         </ul>
       </nav>
     </>
